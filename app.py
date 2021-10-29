@@ -29,6 +29,11 @@ def init():
     e = create_engine('sqlite:///superset.db')
     e.execute(f"update dbs set sqlalchemy_uri='sqlite:///{path}/superset.db'")
     with open('superset_config.py','w') as file:
+        file.write("""
+import pathlib
+if pathlib.Path("superset_config_ex.py").exists():
+    from superset_config_ex import *
+        """)
         file.write(f'SQLALCHEMY_DATABASE_URI = "sqlite:///{path}/superset.db"')
 
 def main():
