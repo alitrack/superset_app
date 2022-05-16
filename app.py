@@ -19,7 +19,14 @@ import os
 import pathlib
 import re
 from sqlalchemy.engine import create_engine
-from superset.cli import superset
+import os 
+os.environ['FLASK_APP'] = 'superset'
+
+from superset.config import VERSION_STRING
+if VERSION_STRING < '1.5.0':
+    from superset.cli import superset
+else:
+    from superset.cli.main import superset
 
 def init():
     if pathlib.Path("superset_config.py").exists():
