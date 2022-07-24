@@ -35,31 +35,36 @@ python ..\get-pip.py
 python -m pip install ..\python_geohash‑0.8.5‑cp38‑cp38‑win_amd64.whl
 ```
 
-## install apache superset and pillow
+## install Apache Superset and pillow
 
 ```bash
-pip install apache-superset pillow
-pip install markdown==3.2.2
+python -m pip install -U apache-superset  pillow markdown==3.2.2 Werkzeug==2.0.3
 ```
 
-### init superset
+## install some common database drivers
+```bash
+python -m pip install mysqlclient pymssql==2.1.5 psycopg2-binary clickhouse-driver==0.2.0  clickhouse-sqlalchemy==0.1.6  duckdb-engine
+```
+
+### init Apache Superset
 
 ```bash
+set FLASK_APP=superset 
+
 # initialize the database:
-superset db upgrade
+Scripts\superset db upgrade
 
 # Create an admin user
-$ export FLASK_APP=superset
-superset fab create-admin
+Scripts\superset fab create-admin
 
 # Load some data to play with
-superset load_examples
+Scripts\superset load_examples
 
 # Create default roles and permissions
-superset init
+Scripts\superset init
 
 # To start a development web server on port 8088, use -p to bind to another port
-superset run -p 8088 --with-threads --reload --debugger
+Scripts\superset run -p 8088 --with-threads --reload --debugger
 ```
 
 
