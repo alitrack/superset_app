@@ -9,7 +9,7 @@ Apache Superset out of box version (Windows 64bit)
 * [python-3.8.10-embed-amd64.zip](https://www.python.org/ftp/python/3.8.10/python-3.8.10-embed-amd64.zip)
 * [get-pip.py](https://bootstrap.pypa.io/get-pip.py)
 
-* [python_geohash‑0.8.5‑cp38‑cp38‑win_amd64.whl](https://download.lfd.uci.edu/pythonlibs/w6tyco5e/python_geohash-0.8.5-cp38-cp38-win_amd64.whl)
+* python_geohash‑0.8.5‑cp38‑cp38‑win_amd64.whl [download from here](https://www.lfd.uci.edu/~gohlke/pythonlibs/)
 
 unzip python-3.8.10-embed-amd64.zip and goto the unzip folder
 
