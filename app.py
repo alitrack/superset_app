@@ -39,16 +39,17 @@ def init():
         return 
     
     path =pathlib.Path(".").absolute().as_posix()
-    
-    e = create_engine('sqlite:///superset.db')
-    # 判断表是否存在
-    table_check = e.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dbs';").fetchone()
-    if table_check:
-        # 表存在，则执行更新操作
-        e.execute(f"update dbs set sqlalchemy_uri='sqlite:///{path}/superset.db'")
-    else:
-        # 表不存在，则不执行任何操作
-        pass    
+    if pathlib.Path('superset.db').exists:
+        e = create_engine('sqlite:///superset.db')
+        # 判断表是否存在
+        table_check = e.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dbs';").fetchone()
+        if table_check:
+            # 表存在，则执行更新操作
+            e.execute(f"update dbs set sqlalchemy_uri='sqlite:///{path}/superset.db'")
+        else:
+            # 表不存在，则不执行任何操作
+            pass    
+
     
     with open('superset_config.py','w') as file:
         file.write(f"""
