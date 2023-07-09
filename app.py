@@ -18,9 +18,15 @@ import sys
 import os 
 import pathlib
 import re
+import base64
 from sqlalchemy.engine import create_engine
-import os 
 os.environ['FLASK_APP'] = 'superset'
+
+
+def create_secret_key():
+    random_bytes = os.urandom(42) 
+    base64_encoded = base64.b64encode(random_bytes)
+    return base64_encoded.decode('utf-8')
 
 from superset.config import VERSION_STRING
 if VERSION_STRING < '1.5.0':
@@ -33,13 +39,23 @@ def init():
         return 
     
     path =pathlib.Path(".").absolute().as_posix()
+    
     e = create_engine('sqlite:///superset.db')
-    e.execute(f"update dbs set sqlalchemy_uri='sqlite:///{path}/superset.db'")
+    # 判断表是否存在
+    table_check = e.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dbs';").fetchone()
+    if table_check:
+        # 表存在，则执行更新操作
+        e.execute(f"update dbs set sqlalchemy_uri='sqlite:///{path}/superset.db'")
+    else:
+        # 表不存在，则不执行任何操作
+        pass    
+    
     with open('superset_config.py','w') as file:
-        file.write("""
+        file.write(f"""
 import pathlib
 if pathlib.Path("superset_config_ex.py").exists():
     from superset_config_ex import *
+SECRET_KEY = "{create_secret_key()}"    
         """)
         file.write("\n")
         file.write(f'SQLALCHEMY_DATABASE_URI = "sqlite:///{path}/superset.db"')
